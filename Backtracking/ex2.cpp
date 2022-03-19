@@ -34,15 +34,19 @@ void Sudoku::initialize() {
         }
     }
     this->countFilled = 0;
+    this->numSolutions = 0;
 }
 
 bool Sudoku::isComplete() const {
     return countFilled == 9 * 9;
 }
 
-bool Sudoku::solve() {
-    if(isComplete())
+bool Sudoku::solve(bool hasToCountSolutions) {
+    if(isComplete()){
+        if(hasToCountSolutions)
+            numSolutions++;
         return true;
+    }
 
     int x, y;
 
@@ -55,14 +59,17 @@ bool Sudoku::solve() {
         if(accepts(y, x, n)){
             place(y, x, n);
 
-            if(solve())
+            if(solve(hasToCountSolutions) && !hasToCountSolutions)
+                return true;
+
+            else if(hasToCountSolutions && numSolutions == 2)
                 return true;
 
             clear(y, x);
         }   
     }
     
-    return false;
+    return numSolutions > 0;
 }
 
 
@@ -92,8 +99,10 @@ bool Sudoku::findBestCell(int& x, int& y){
 }
 
 int Sudoku::countSolutions() {
-    //TODO
-    return 0;
+    numSolutions = 0;
+    solve(true);
+    
+    return numSolutions;
 }
 
 void Sudoku::generate() {
@@ -110,6 +119,9 @@ int** Sudoku::getNumbers() {
     return ret;
 }
 
+int Sudoku::getNumSolutions(){
+    return numSolutions;
+}
 
 void Sudoku::print() const {
     for (int i = 0; i < 9; i++) {
@@ -169,13 +181,15 @@ bool compareSudokus(int in[9][9], int out[9][9]) {
 void test(int number, int in[][9], int out[][9], bool expected){
     Sudoku s(in);
 
-    if(s.solve() == expected)
+    if(s.countSolutions() == expected)
         cout << "Test " << number << " passed (expected " << expected << ")." << endl;
     else
         cout << "Test " << number << " failed.(expected " << expected << ")."<< endl;
 
     int sout[9][9];
     int** res = s.getNumbers();
+
+    cout << "The sudoku was solved " << s.getNumSolutions() << " times." << endl;
 
     //Copying current sudoku numbers
     for (int i = 0; i < 9; i++)

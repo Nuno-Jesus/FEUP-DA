@@ -51,7 +51,7 @@ public:
      * Solves the puzzle.
      * Returns a boolean indicating if the puzzle is possible.
      */
-    bool solve();
+    bool solve(bool hasToCountSolutions);
     /**
      * Determines the multiplicity of the puzzle's solutions.
      * It is a variant of the solve method.
@@ -70,6 +70,11 @@ public:
 	 * Obtains the current of the puzzle (only for reading, not writing!).
 	 */
     int **getNumbers();
+
+    /**
+     * Obtains the ammount of solutions calculated while solving the sudoku
+    */
+    int getNumSolutions();
     /**
      * Prints the solution.
      */
@@ -80,6 +85,12 @@ private:
      * 0 means the cell is empty.
      */
     int numbers[9][9];
+
+    /**
+     * Number of solutions
+     */
+
+    int numSolutions;
     /**
      * Information derivable from numbers. Used to accelerate the computations.
      */
