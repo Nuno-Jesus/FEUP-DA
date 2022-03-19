@@ -109,6 +109,8 @@ private:
      */
     void clear();
 	//TODO: Add other methods if needed
+
+    bool findBestCell(int& x, int& y);
 };
 
 // Ex 3
