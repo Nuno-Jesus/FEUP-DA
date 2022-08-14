@@ -1,0 +1,5 @@
+TP1/src/.vscode/
+TP2/src/.vscode/
+*.out
+*.o
+*.DS_Store
